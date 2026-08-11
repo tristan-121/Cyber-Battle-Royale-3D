@@ -1,0 +1,6 @@
+{
+  "name": "Laser Tag Arena 3D",
+  "description": "Massive multiplayer first-person 3D laser tag arena with real-time WebSockets, bot auto-fill, custom blasters, and spatial audio.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
