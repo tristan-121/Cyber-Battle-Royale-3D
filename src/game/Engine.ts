@@ -856,6 +856,7 @@ export class GameEngine {
       active: true,
       respawnTime: 20,
     });
+    pGroup.userData = { powerupType: powerup.type };
     this.scene.add(pGroup);
     this.mapBundle.powerupMeshes.set(powerup.id, pGroup);
   }
@@ -903,23 +904,30 @@ export class GameEngine {
         audioManager.playPowerup();
 
         const spawn = currentMapConfig.powerupSpawns.find((s) => s.id === id);
-        const pType = spawn?.type || (id.includes('red') ? 'red_crystal' : id.includes('blue') ? 'blue_crystal' : id.includes('green') ? 'green_crystal' : 'red_crystal');
+        let pType = (pGroup.userData?.powerupType || spawn?.type) as string | undefined;
 
-        if (pType === 'red_crystal' || pType === 'quad_damage') {
-          this.redCrystalTimer = 30;
+        if (!pType) {
+          if (id.includes('green')) pType = 'green_crystal';
+          else if (id.includes('blue')) pType = 'blue_crystal';
+          else if (id.includes('red')) pType = 'red_crystal';
+          else pType = 'green_crystal';
+        }
+
+        if (pType === 'green_crystal' || pType === 'speed') {
+          this.shield = Math.min(50, this.shield + 25);
+          this.greenCrystalTimer = 30;
           if (this.options.onPowerupCollected) {
-            this.options.onPowerupCollected('red_crystal', '🔴 RED CRYSTAL: +10% WEAPON DAMAGE (30s)');
+            this.options.onPowerupCollected('green_crystal', '🟢 GREEN CRYSTAL: SPEED BOOST ACTIVATED (+50% SPEED FOR 30s)');
           }
         } else if (pType === 'blue_crystal' || pType === 'health') {
           this.health = Math.min(100, this.health + 25);
           if (this.options.onPowerupCollected) {
             this.options.onPowerupCollected('blue_crystal', '🔵 BLUE CRYSTAL: +25 HP REHEALTH!');
           }
-        } else if (pType === 'green_crystal' || pType === 'speed') {
-          this.shield = Math.min(50, this.shield + 25);
-          this.greenCrystalTimer = 30;
+        } else if (pType === 'red_crystal' || pType === 'quad_damage') {
+          this.redCrystalTimer = 30;
           if (this.options.onPowerupCollected) {
-            this.options.onPowerupCollected('green_crystal', '🟢 GREEN CRYSTAL: SPEED BOOST ACTIVATED (+50% SPEED FOR 30s)');
+            this.options.onPowerupCollected('red_crystal', '🔴 RED CRYSTAL: +10% WEAPON DAMAGE (30s)');
           }
         }
 

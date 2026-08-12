@@ -362,6 +362,7 @@ export class MapBuilder {
   public static createPowerupMesh(p: Powerup): THREE.Group {
     const pGroup = new THREE.Group();
     pGroup.position.set(p.position.x, p.position.y, p.position.z);
+    pGroup.userData = { powerupType: p.type };
 
     // Base Pad
     const baseGeo = new THREE.CylinderGeometry(1.2, 1.4, 0.3, 16);

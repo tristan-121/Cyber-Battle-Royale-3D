@@ -105,9 +105,9 @@ const MAP_POWERUP_SPAWNS: Record<string, Array<{ id: string; type: 'red_crystal'
   ],
   inferno_vault: [
     { id: 'p1', type: 'red_crystal', position: { x: 0, y: 9.5, z: 0 } },
-    { id: 'p2', type: 'blue_crystal', position: { x: -20, y: 1.5, z: 20 } },
-    { id: 'p3', type: 'green_crystal', position: { x: 20, y: 1.5, z: -20 } },
-    { id: 'p4', type: 'blue_crystal', position: { x: -20, y: 1.5, z: -20 } },
+    { id: 'p2', type: 'green_crystal', position: { x: -20, y: 1.5, z: 20 } },
+    { id: 'p3', type: 'blue_crystal', position: { x: 20, y: 1.5, z: -20 } },
+    { id: 'p4', type: 'green_crystal', position: { x: 0, y: 1.5, z: 0 } },
   ],
 };
 
@@ -1280,7 +1280,7 @@ async function startServer() {
             if (room) {
               const player = room.players.get(playerId);
               if (player && player.isGodMode) {
-                const powerupId = `dev_crystal_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+                const powerupId = `dev_crystal_${data.crystalType}_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
                 const powerup: ServerPowerup = {
                   id: powerupId,
                   type: data.crystalType,
